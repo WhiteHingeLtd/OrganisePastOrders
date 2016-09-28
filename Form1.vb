@@ -139,72 +139,93 @@ Public Class Form1
     End Sub
 
     Private Sub SendFilesBtn_Click(sender As Object, e As EventArgs) Handles SendFilesBtn.Click
+
+        Dim checkPrevLocation As Integer = 0 '1 for orders, 2 for past, 3 for dated folder.
         If DestSelected Then
-            If LoadedFromOrders Then
-                'AAAHHHH YOU ETERNAL BROKEN PENCIL! YOU'RE POINTLESS!
-                'I will be back, with an army of coffee. Mark my words, code. You will be given a purpose.
+            MsgBox("Temporarilly disabled - changes are being made to file relocation.")
 
-                MsgBox("Moving from orders is now no longer possible. Too much will go wrong.")
+            '///STUFF TO DO IN THE FUTURE///
 
-                'If DestinationPath = "T:\AppData\Orders\" Then
-                '    'Stop wasting time :/
-                '    MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the orders folder to... the orders folder!? Cancelling.")
+            'If the destination is a different place from where the items are currently
+            '    Get selected stuff from table
+            '    Set up loading bar
+            '    For each selected item
+            '        Move item
+            '        Loading bar stuff
+            '    Next
+            '    Reset loading bar
+            'MsgBox("Items moved.")
+            'End if
 
-                'Else
-                '    'This isn't gonna be too complex. Just send them to DestinationPath + fileDictionary.Item(<KEY VALUE>).Replace("\", "-") + "\"
-                '    If MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the orders folder to folders based on their creation date. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                '        For Each file In fileDictionary
-                '            Dim DestPath As String = DestinationPath + file.Value.Replace("/", "-") + "\" + file.Key.Replace("T:\AppData\Orders\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-                '            My.Computer.FileSystem.MoveFile(file.Key, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-                '        Next
-                '    End If
-                'End If
-            Else 'Loaded from Past
-                If DestinationPath = "T:\AppData\Orders\" Then
-
-                    LoadingProgress.Maximum = GatheredGrid.Rows.Count 'Loading bar - equivelant to the amount of files
-                    LoadingProgress.Minimum = 0 'Starting at 0
-
-                    Dim newFileDictionary As New Dictionary(Of String, String) 'Get our selected rows
-                    For Each row As DataGridViewRow In GatheredGrid.Rows 'For each row
-                        If row.Cells(1).Value = True Then 'Check it's ticked
-                            Dim newKVP As KeyValuePair(Of String, String) = row.Tag 'Get the tag, a dictionary entry - A key and value
-                            newFileDictionary.Add(newKVP.Key, newKVP.Value) 'Add it to the new dictionary
-                            LoadingProgress.Increment(1) 'Increase our loading bar
-                        End If
-                    Next
-                    LoadingProgress.Value = 0 'Set loading bar back.
-
-                    LoadingProgress.Maximum = newFileDictionary.Count 'Loading bar - equivelant to the amount of files... redone
-
-                    If MsgBox("This will send " + newFileDictionary.Count.ToString + " orders from the past folder to the orders folder. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                        For Each file In newFileDictionary
-                            'This is why we needed the new file dictionary. Without it, we'd have issues.
-                            Dim DestPath As String = DestinationPath + file.Key.Replace("T:\AppData\Orders\Past\", "") 'This will become    T:\AppData\Orders\   +   1234567.ordex
-                            My.Computer.FileSystem.MoveFile(file.Key, DestPath) 'Send T:\AppData\Orders\Past\1234567.ordex to T:\AppData\Orders\1234567.ordex
-                            LoadingProgress.Increment(1) 'Increase our loading bar
-                        Next
-                    End If
-                    LoadingProgress.Value = 0 'Set loading bar back.
-                Else
-                    'If MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the past folder to folders based on their creation date. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                    '    For Each file In fileDictionary
-
-                    '        'Move 'file' to 'DestinationPath + file.Value.Replace("\", "-") + "\"'
-
-
-                    '    Next
-                    'End If
-
-                    MsgBox("Not happening. It'll screw up Oversold Order Viewer and Order Downloader which have to see old orders.")
-                End If
-
-            End If
-
-            InfoLabel.Text = "Files sent."
         Else
             MsgBox("Select a destination folder from the drop down menu.")
         End If
+
+
+
+        'If DestSelected Then
+        '    If LoadedFromOrders Then
+        '        'MsgBox("Moving from orders is now no longer possible. Too much will go wrong.")
+
+        '        If DestinationPath = "T:\AppData\Orders\" Then
+        '            'Stop wasting time :/
+        '            MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the orders folder to the orders folder." + vbNewLine + "No.")
+
+        '        Else
+        '            'This isn't gonna be too complex. Just send them to DestinationPath + fileDictionary.Item(<KEY VALUE>).Replace("\", "-") + "\"
+        '            If MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the orders folder to folders based on their creation date. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+        '                For Each file In fileDictionary
+        '                    Dim DestPath As String = DestinationPath + file.Value.Replace("/", "-") + "\" + file.Key.Replace("T:\AppData\Orders\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+        '                    My.Computer.FileSystem.MoveFile(file.Key, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+        '                Next
+        '            End If
+        '        End If
+        '    Else 'Loaded from Past
+        '        If DestinationPath = "T:\AppData\Orders\" Then
+
+        '            LoadingProgress.Maximum = GatheredGrid.Rows.Count 'Loading bar - equivelant to the amount of files
+        '            LoadingProgress.Minimum = 0 'Starting at 0
+
+        '            Dim newFileDictionary As New Dictionary(Of String, String) 'Get our selected rows
+        '            For Each row As DataGridViewRow In GatheredGrid.Rows 'For each row
+        '                If row.Cells(1).Value = True Then 'Check it's ticked
+        '                    Dim newKVP As KeyValuePair(Of String, String) = row.Tag 'Get the tag, a dictionary entry - A key and value
+        '                    newFileDictionary.Add(newKVP.Key, newKVP.Value) 'Add it to the new dictionary
+        '                End If
+        '                LoadingProgress.Increment(1) 'Increase our loading bar
+        '            Next
+        '            LoadingProgress.Value = 0 'Set loading bar back.
+
+        '            LoadingProgress.Maximum = newFileDictionary.Count 'Loading bar - equivelant to the amount of files... redone
+
+        '            If MsgBox("This will send " + newFileDictionary.Count.ToString + " orders from the past folder to the orders folder. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+        '                For Each file In newFileDictionary
+        '                    'This is why we needed the new file dictionary. Without it, we'd have issues.
+        '                    Dim DestPath As String = DestinationPath + file.Key.Replace("T:\AppData\Orders\Past\", "") 'This will become    T:\AppData\Orders\   +   1234567.ordex
+        '                    My.Computer.FileSystem.MoveFile(file.Key, DestPath) 'Send T:\AppData\Orders\Past\1234567.ordex to T:\AppData\Orders\1234567.ordex
+        '                    LoadingProgress.Increment(1) 'Increase our loading bar
+        '                Next
+        '            End If
+        '            LoadingProgress.Value = 0 'Set loading bar back.
+        '        Else
+        '            'If MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the past folder to folders based on their creation date. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+        '            '    For Each file In fileDictionary
+
+        '            '        'Move 'file' to 'DestinationPath + file.Value.Replace("\", "-") + "\"'
+
+
+        '            '    Next
+        '            'End If
+
+        '            MsgBox("Not happening. It'll screw up Oversold Order Viewer and Order Downloader which have to see old orders.")
+        '        End If
+
+        '    End If
+
+        '    InfoLabel.Text = "Files sent."
+        'Else
+        '    MsgBox("Select a destination folder from the drop down menu.")
+        'End If
 
     End Sub
 
@@ -217,38 +238,34 @@ Public Class Form1
             LoadingProgress.Value = 0
 
             If MsgBox("This will send orders in this table from a week ago, regardless of whether selected or not, into the target folder. Are you sure you want to do this?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                If MsgBox("ALL FILES" + vbNewLine + "FROM OVER A WEEK AGO" + vbNewLine + "ARE GOING TO MOVE." + vbNewLine + vbNewLine + "YOU'RE CERTAIN?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
 
-                    InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
-                    MyBase.Enabled = False
+                InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
+                MyBase.Enabled = False
 
-                    Application.DoEvents()
+                Application.DoEvents()
 
-                    Dim DateOfFile As Date = Today.AddDays(-7) 'Get a week in the past
-                    For Each Row As DataGridViewRow In GatheredGrid.Rows
-                        If Row.Cells(2).Value < DateOfFile Then 'Check if files are a week old
-                            Dim theFile As String = Row.Tag
-                            If DestinationPath = "T:\AppData\Orders\" Then
-                                Dim DestPath As String = DestinationPath + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "")
-                                My.Computer.FileSystem.MoveFile(theFile, DestPath)
-                            Else 'OOOH, we have to seperate by date :D
-                                Dim tagDate As DateTime = Row.Cells(2).Value
-                                Dim DestPath As String = DestinationPath + tagDate.ToString("yyyy-MM-dd") + "\" + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-                                My.Computer.FileSystem.MoveFile(theFile, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-
-                            End If
+                Dim DateOfFile As Date = Today.AddDays(-7) 'Get a week in the past
+                For Each Row As DataGridViewRow In GatheredGrid.Rows
+                    If Row.Cells(2).Value < DateOfFile Then 'Check if files are a week old
+                        Dim theFile As String = Row.Tag
+                        If DestinationPath = "T:\AppData\Orders\" Then
+                            Dim DestPath As String = DestinationPath + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "")
+                            My.Computer.FileSystem.MoveFile(theFile, DestPath)
+                        Else 'OOOH, we have to seperate by date :D
+                            Dim tagDate As DateTime = Row.Cells(2).Value
+                            Dim DestPath As String = DestinationPath + tagDate.ToString("yyyy-MM-dd") + "\" + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+                            My.Computer.FileSystem.MoveFile(theFile, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
                         End If
+                    End If
+                    LoadingProgress.Increment(1)
+                Next
+                LoadingProgress.Value = 0
+                InfoLabel.Text = "Files moved."
+                GatheredGrid.Rows.Clear()
+                MyBase.Enabled = True
 
-                        LoadingProgress.Increment(1)
-                    Next
-                    LoadingProgress.Value = 0
-                    InfoLabel.Text = "Files moved."
-                    GatheredGrid.Rows.Clear()
-                    MyBase.Enabled = True
-
-                    Application.DoEvents()
-
-                End If
+                Application.DoEvents()
+                MsgBox("Items moved.")
             End If
         Else
             MsgBox("Select a destination folder from the drop down menu.")

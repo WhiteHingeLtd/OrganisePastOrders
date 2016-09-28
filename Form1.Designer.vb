@@ -27,6 +27,10 @@ Partial Class Form1
         Me.GetFromPastBtn = New System.Windows.Forms.Button()
         Me.SendFilesBtn = New System.Windows.Forms.Button()
         Me.GatheredGrid = New System.Windows.Forms.DataGridView()
+        Me.OrderNumCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.SelectedCol = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.OrderCreationDateCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.OrderStateCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DestinationCB = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.InfoLabel = New System.Windows.Forms.Label()
@@ -35,10 +39,6 @@ Partial Class Form1
         Me.Label2 = New System.Windows.Forms.Label()
         Me.PastSubText = New System.Windows.Forms.TextBox()
         Me.GetFromOtherBtn = New System.Windows.Forms.Button()
-        Me.OrderNumCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.SelectedCol = New System.Windows.Forms.DataGridViewCheckBoxColumn()
-        Me.OrderCreationDateCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.OrderStateCol = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.GatheredGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -87,6 +87,31 @@ Partial Class Form1
         Me.GatheredGrid.RowHeadersVisible = False
         Me.GatheredGrid.Size = New System.Drawing.Size(430, 481)
         Me.GatheredGrid.TabIndex = 3
+        '
+        'OrderNumCol
+        '
+        Me.OrderNumCol.HeaderText = "Order Number"
+        Me.OrderNumCol.Name = "OrderNumCol"
+        Me.OrderNumCol.ReadOnly = True
+        '
+        'SelectedCol
+        '
+        Me.SelectedCol.HeaderText = "Selected"
+        Me.SelectedCol.Name = "SelectedCol"
+        '
+        'OrderCreationDateCol
+        '
+        DataGridViewCellStyle1.Format = "d"
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.OrderCreationDateCol.DefaultCellStyle = DataGridViewCellStyle1
+        Me.OrderCreationDateCol.HeaderText = "Created on"
+        Me.OrderCreationDateCol.Name = "OrderCreationDateCol"
+        Me.OrderCreationDateCol.ReadOnly = True
+        '
+        'OrderStateCol
+        '
+        Me.OrderStateCol.HeaderText = "Order State"
+        Me.OrderStateCol.Name = "OrderStateCol"
         '
         'DestinationCB
         '
@@ -159,37 +184,12 @@ Partial Class Form1
         '
         Me.GetFromOtherBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GetFromOtherBtn.Enabled = False
-        Me.GetFromOtherBtn.Location = New System.Drawing.Point(323, 41)
+        Me.GetFromOtherBtn.Location = New System.Drawing.Point(323, 39)
         Me.GetFromOtherBtn.Name = "GetFromOtherBtn"
         Me.GetFromOtherBtn.Size = New System.Drawing.Size(119, 23)
         Me.GetFromOtherBtn.TabIndex = 11
         Me.GetFromOtherBtn.Text = "Gather from Other"
         Me.GetFromOtherBtn.UseVisualStyleBackColor = True
-        '
-        'OrderNumCol
-        '
-        Me.OrderNumCol.HeaderText = "Order Number"
-        Me.OrderNumCol.Name = "OrderNumCol"
-        Me.OrderNumCol.ReadOnly = True
-        '
-        'SelectedCol
-        '
-        Me.SelectedCol.HeaderText = "Selected"
-        Me.SelectedCol.Name = "SelectedCol"
-        '
-        'OrderCreationDateCol
-        '
-        DataGridViewCellStyle1.Format = "d"
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.OrderCreationDateCol.DefaultCellStyle = DataGridViewCellStyle1
-        Me.OrderCreationDateCol.HeaderText = "Created on"
-        Me.OrderCreationDateCol.Name = "OrderCreationDateCol"
-        Me.OrderCreationDateCol.ReadOnly = True
-        '
-        'OrderStateCol
-        '
-        Me.OrderStateCol.HeaderText = "Order State"
-        Me.OrderStateCol.Name = "OrderStateCol"
         '
         'Form1
         '

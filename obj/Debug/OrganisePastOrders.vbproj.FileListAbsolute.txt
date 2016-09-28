@@ -36,3 +36,7 @@ Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\obj\Debug\Organi
 Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\obj\Debug\OrganisePastOrders.Form1.resources
 Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\obj\Debug\OrganisePastOrders.Resources.resources
 Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\obj\Debug\OrganisePastOrders.vbproj.GenerateResource.Cache
+Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\bin\Debug\OrganisePastOrders.exe.manifest
+Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\bin\Debug\OrganisePastOrders.application
+Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\obj\Debug\OrganisePastOrders.exe.manifest
+Z:\.V5\Documents\Projects\OrganisePastOrders\OrganisePastOrders\obj\Debug\OrganisePastOrders.application
