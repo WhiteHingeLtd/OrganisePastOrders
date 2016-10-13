@@ -237,16 +237,16 @@ Public Class Form1
             LoadingProgress.Minimum = 0 'Starting at 0
             LoadingProgress.Value = 0
 
-            If MsgBox("This will send orders in this table from a week ago, regardless of whether selected or not, into the target folder. Are you sure you want to do this?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If MsgBox("This will send orders in this table from 4 days ago, regardless of whether selected or not, into the target folder. Are you sure you want to do this?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
 
                 InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
                 MyBase.Enabled = False
 
                 Application.DoEvents()
 
-                Dim DateOfFile As Date = Today.AddDays(-7) 'Get a week in the past
+                Dim DateOfFile As Date = Today.AddDays(-4) 'Get 4 days in the past
                 For Each Row As DataGridViewRow In GatheredGrid.Rows
-                    If Row.Cells(2).Value < DateOfFile Then 'Check if files are a week old
+                    If Row.Cells(2).Value < DateOfFile Then 'Check if files are 4 days old
                         Dim theFile As String = Row.Tag
                         If DestinationPath = "T:\AppData\Orders\" Then
                             Dim DestPath As String = DestinationPath + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "")
