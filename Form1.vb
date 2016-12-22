@@ -1,7 +1,7 @@
 ﻿Imports WHLClasses
 Imports Linnworks.Orders.ExtendedOrder
 
-Public Class Form1
+Public Class PastOrderOrganisingForm
     Dim FilesGathered As Boolean = False
     Dim DestinationPath As String = ""
     Dim Loader As New GenericDataController
@@ -40,13 +40,12 @@ Public Class Form1
             Dim newRow As New DataGridViewRow 'Make a row
             newRow.CreateCells(GatheredGrid) 'Create cells
             newRow.Cells(0).Value = file.Replace(FilePath, "") 'Add the file name to the first column
-            newRow.Cells(1).Value = False 'This will be fuggin awkward but we can do this
-            newRow.Cells(2).Value = DateOfFile 'Add the state date to the second column
+            newRow.Cells(1).Value = DateOfFile 'Add the state date to the second column
 
             If LoadOrderStatus Then
                 Try 'Awww shit this is gonna suck... We can't just use the orddef because it just checks orders. Past isn't gonna work like that.
                     Dim theOrdex As Linnworks.Orders.ExtendedOrder = Loader.LoadOrdex(file, False)
-                    newRow.Cells(3).Value = theOrdex.Status.ToString 'Add the file state to the second column
+                    newRow.Cells(2).Value = theOrdex.Status.ToString 'Add the file state to the second column
                 Catch ex As Exception
                     'When we get loading stuff ready, we need to have our reports added to the table somewhere for when things go wrong...
                     'Maybe add the name to a list of failed records, then add them to a fail list table in a different window...
@@ -60,37 +59,6 @@ Public Class Form1
         Next
 
         LoadingProgress.Value = 0
-
-        'InfoLabel.Text =  'We have our files and values ready. Tell the user what we're loading
-        'Application.DoEvents()
-
-        'For Each file As String In fileDictionary.Keys 'For each file in the list
-        '    If file.EndsWith(".ordex") Then 'Check they're ordex files
-
-
-        '        Dim newRow As New DataGridViewRow 'Make a row
-        '        newRow.CreateCells(GatheredGrid) 'Create cells
-        '        newRow.Cells(0).Value = file.Replace(FilePath, "") 'Add the file name to the first column
-        '        newRow.Cells(1).Value = False 'This will be fuggin awkward but we can do this
-        '        newRow.Cells(2).Value = fileDictionary.Item(file) 'Add the state date to the second column
-
-        '        Try 'Awww shit this is gonna suck... We can't just use the orddef because it just checks orders. Past isn't gonna work like that.
-        '            Dim theOrdex As Linnworks.Orders.ExtendedOrder = Loader.LoadOrdex(file, False)
-        '            newRow.Cells(3).Value = theOrdex.Status.ToString 'Add the file state to the second column
-        '        Catch ex As Exception
-        '            'When we get loading stuff ready, we need to have our reports added to the table somewhere for when things go wrong...
-        '            'Maybe add the name to a list of failed records, then add them to a fail list table in a different window...
-        '        End Try
-
-        '        newRow.Tag = file
-
-
-        '        LoadingProgress.Increment(1)
-
-        '        GatheredGrid.Rows.Add(newRow) 'Add the row
-        '    End If
-        'Next
-        'LoadingProgress.Value = 0 'We're done. Stop looking like we're loading.
         Application.DoEvents()
 
         MyBase.Enabled = True 'LET BUTTONS BE PRESSED
@@ -138,134 +106,71 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub SendFilesBtn_Click(sender As Object, e As EventArgs) Handles SendFilesBtn.Click
-
-        Dim checkPrevLocation As Integer = 0 '1 for orders, 2 for past, 3 for dated folder.
-        If DestSelected Then
-            MsgBox("Temporarilly disabled - changes are being made to file relocation.")
-
-            '///STUFF TO DO IN THE FUTURE///
-
-            'If the destination is a different place from where the items are currently
-            '    Get selected stuff from table
-            '    Set up loading bar
-            '    For each selected item
-            '        Move item
-            '        Loading bar stuff
-            '    Next
-            '    Reset loading bar
-            'MsgBox("Items moved.")
-            'End if
-
-        Else
-            MsgBox("Select a destination folder from the drop down menu.")
-        End If
-
-
-
-        'If DestSelected Then
-        '    If LoadedFromOrders Then
-        '        'MsgBox("Moving from orders is now no longer possible. Too much will go wrong.")
-
-        '        If DestinationPath = "T:\AppData\Orders\" Then
-        '            'Stop wasting time :/
-        '            MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the orders folder to the orders folder." + vbNewLine + "No.")
-
-        '        Else
-        '            'This isn't gonna be too complex. Just send them to DestinationPath + fileDictionary.Item(<KEY VALUE>).Replace("\", "-") + "\"
-        '            If MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the orders folder to folders based on their creation date. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-        '                For Each file In fileDictionary
-        '                    Dim DestPath As String = DestinationPath + file.Value.Replace("/", "-") + "\" + file.Key.Replace("T:\AppData\Orders\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-        '                    My.Computer.FileSystem.MoveFile(file.Key, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-        '                Next
-        '            End If
-        '        End If
-        '    Else 'Loaded from Past
-        '        If DestinationPath = "T:\AppData\Orders\" Then
-
-        '            LoadingProgress.Maximum = GatheredGrid.Rows.Count 'Loading bar - equivelant to the amount of files
-        '            LoadingProgress.Minimum = 0 'Starting at 0
-
-        '            Dim newFileDictionary As New Dictionary(Of String, String) 'Get our selected rows
-        '            For Each row As DataGridViewRow In GatheredGrid.Rows 'For each row
-        '                If row.Cells(1).Value = True Then 'Check it's ticked
-        '                    Dim newKVP As KeyValuePair(Of String, String) = row.Tag 'Get the tag, a dictionary entry - A key and value
-        '                    newFileDictionary.Add(newKVP.Key, newKVP.Value) 'Add it to the new dictionary
-        '                End If
-        '                LoadingProgress.Increment(1) 'Increase our loading bar
-        '            Next
-        '            LoadingProgress.Value = 0 'Set loading bar back.
-
-        '            LoadingProgress.Maximum = newFileDictionary.Count 'Loading bar - equivelant to the amount of files... redone
-
-        '            If MsgBox("This will send " + newFileDictionary.Count.ToString + " orders from the past folder to the orders folder. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-        '                For Each file In newFileDictionary
-        '                    'This is why we needed the new file dictionary. Without it, we'd have issues.
-        '                    Dim DestPath As String = DestinationPath + file.Key.Replace("T:\AppData\Orders\Past\", "") 'This will become    T:\AppData\Orders\   +   1234567.ordex
-        '                    My.Computer.FileSystem.MoveFile(file.Key, DestPath) 'Send T:\AppData\Orders\Past\1234567.ordex to T:\AppData\Orders\1234567.ordex
-        '                    LoadingProgress.Increment(1) 'Increase our loading bar
-        '                Next
-        '            End If
-        '            LoadingProgress.Value = 0 'Set loading bar back.
-        '        Else
-        '            'If MsgBox("This will send " + fileDictionary.Count.ToString + " orders from the past folder to folders based on their creation date. Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-        '            '    For Each file In fileDictionary
-
-        '            '        'Move 'file' to 'DestinationPath + file.Value.Replace("\", "-") + "\"'
-
-
-        '            '    Next
-        '            'End If
-
-        '            MsgBox("Not happening. It'll screw up Oversold Order Viewer and Order Downloader which have to see old orders.")
-        '        End If
-
-        '    End If
-
-        '    InfoLabel.Text = "Files sent."
-        'Else
-        '    MsgBox("Select a destination folder from the drop down menu.")
-        'End If
-
-    End Sub
-
     Private Sub SendOldBtn_Click(sender As Object, e As EventArgs) Handles SendOldBtn.Click
         If DestSelected Then
-
-            MyBase.Enabled = False 'PREVENT BUTTONS BEING PRESSED
-            LoadingProgress.Maximum = GatheredGrid.Rows.Count 'Loading bar - equivelant to the amount of files
-            LoadingProgress.Minimum = 0 'Starting at 0
-            LoadingProgress.Value = 0
-
-            If MsgBox("This will send orders in this table from 4 days ago, regardless of whether selected or not, into the target folder. Are you sure you want to do this?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-
-                InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
-                MyBase.Enabled = False
-
-                Application.DoEvents()
-
-                Dim DateOfFile As Date = Today.AddDays(-4) 'Get 4 days in the past
-                For Each Row As DataGridViewRow In GatheredGrid.Rows
-                    If Row.Cells(2).Value < DateOfFile Then 'Check if files are 4 days old
-                        Dim theFile As String = Row.Tag
-                        If DestinationPath = "T:\AppData\Orders\" Then
-                            Dim DestPath As String = DestinationPath + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "")
-                            My.Computer.FileSystem.MoveFile(theFile, DestPath)
-                        Else 'OOOH, we have to seperate by date :D
-                            Dim tagDate As DateTime = Row.Cells(2).Value
-                            Dim DestPath As String = DestinationPath + tagDate.ToString("yyyy-MM-dd") + "\" + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-                            My.Computer.FileSystem.MoveFile(theFile, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
-                        End If
+            If DaysOldNum.Text.Length > 0 Then
+                If IsNumeric(DaysOldNum.Text) Then
+                    Dim daysOld As Integer = DaysOldNum.Text
+                    If daysOld < 0 Then
+                        MsgBox("No need for a negative indicator. It becomes negative anyway.")
+                        daysOld = -daysOld
+                        DaysOldNum.Text = daysOld
+                    ElseIf daysOld = 0 Then
+                        MsgBox("... 0 days, huh... Sure. When I reach into the vast emptiness of nothing at all, I get... your FACE. I will now proceed to stuff your face into the folder you selected.")
+                        Threading.Thread.Sleep(1000)
+                        MsgBox("...")
+                        Threading.Thread.Sleep(500)
+                        MsgBox("Ok, that was rude of me. I'll just set the days to 4 instead.")
+                        daysOld = 4
+                        DaysOldNum.Text = "4"
+                        MsgBox("Now stop being a smartarse. ¬_¬")
+                        Threading.Thread.Sleep(200)
                     End If
-                    LoadingProgress.Increment(1)
-                Next
-                LoadingProgress.Value = 0
-                InfoLabel.Text = "Files moved."
-                GatheredGrid.Rows.Clear()
-                MyBase.Enabled = True
+                    MyBase.Enabled = False 'PREVENT BUTTONS BEING PRESSED
+                    LoadingProgress.Maximum = GatheredGrid.Rows.Count 'Loading bar - equivelant to the amount of files
+                    LoadingProgress.Minimum = 0 'Starting at 0
+                    LoadingProgress.Value = 0
 
-                Application.DoEvents()
-                MsgBox("Items moved.")
+                    If MsgBox("This will send orders in this table from " + daysOld.ToString + " days ago into the target folder. Are you sure you want to do this?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+
+                        InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
+                        MyBase.Enabled = False
+
+                        Application.DoEvents()
+
+                        Dim DateOfFile As Date = Today.AddDays(-daysOld) 'Get 4 days in the past
+                        For Each Row As DataGridViewRow In GatheredGrid.Rows
+                            If Row.Cells(1).Value < DateOfFile Then 'Check if files are 4 days old
+                                Dim theFile As String = Row.Tag
+                                If DestinationPath = "T:\AppData\Orders\" Then
+                                    Dim DestPath As String = DestinationPath + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "")
+                                    My.Computer.FileSystem.MoveFile(theFile, DestPath)
+                                Else 'OOOH, we have to seperate by date :D
+                                    Dim tagDate As DateTime = Row.Cells(1).Value
+                                    Dim DestPath As String = DestinationPath + tagDate.ToString("yyyy-MM-dd") + "\" + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+                                    My.Computer.FileSystem.MoveFile(theFile, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+                                End If
+                            End If
+                            LoadingProgress.Increment(1)
+                        Next
+                        LoadingProgress.Value = 0
+                        InfoLabel.Text = "Files moved."
+                        GatheredGrid.Rows.Clear()
+
+                        Application.DoEvents()
+                        If MsgBox("Items moved. Do you want to make the Past Order Dictionary?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                            MakeOrdLst()
+                        Else
+                            MyBase.Enabled = True
+                        End If
+                    Else
+                        MyBase.Enabled = True
+                    End If
+                Else
+                    MsgBox("Set a NUMBER of days to limit to.")
+                End If
+            Else
+                MsgBox("Set a number of days to limit to.")
             End If
         Else
             MsgBox("Select a destination folder from the drop down menu.")
@@ -283,5 +188,52 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub MakeOrdLst()
+        Dim currentOrdexList As List(Of String) = My.Computer.FileSystem.GetFiles("T:\AppData\Orders\", FileIO.SearchOption.SearchTopLevelOnly, "*.ordex").ToList
+        Dim pastOrdexList As List(Of String) = My.Computer.FileSystem.GetFiles("T:\AppData\Orders\Past\", FileIO.SearchOption.SearchTopLevelOnly, "*.ordex").ToList
+        Dim locList As List(Of String) = My.Computer.FileSystem.GetDirectories("T:\AppData\Orders\Past\").ToList
+        LoadingProgress.Maximum = locList.Count
+        LoadingProgress.Value = 0
 
+        Dim OrderDictionary As New Dictionary(Of String, String)
+
+        'ORDERS FOLDER
+        InfoLabel.Text = currentOrdexList.Count.ToString + " files in Orders"
+        Application.DoEvents()
+        For Each currentOrdex As String In currentOrdexList
+            OrderDictionary(currentOrdex.Split("\")(currentOrdex.Split("\").Count - 1).Replace(".ordex", "")) = currentOrdex
+        Next
+
+        'PAST FOLDER
+        InfoLabel.Text = pastOrdexList.Count.ToString + " files in Past"
+        Application.DoEvents()
+        For Each pastOrdex As String In pastOrdexList
+            OrderDictionary(pastOrdex.Split("\")(pastOrdex.Split("\").Count - 1).Replace(".ordex", "")) = pastOrdex
+        Next
+
+        'PAST FOLDERS
+        For Each ListedLocation As String In locList
+            'Get our files
+            Dim fileList As List(Of String) = My.Computer.FileSystem.GetFiles(ListedLocation, FileIO.SearchOption.SearchTopLevelOnly, "*.ordex").ToList
+            InfoLabel.Text = fileList.Count.ToString + " files in " + ListedLocation.Replace("T:\AppData\Orders\Past\", "").Replace("\", "")
+            Application.DoEvents()
+
+            For Each ListedFile In fileList
+                OrderDictionary(ListedFile.Split("\")(ListedFile.Split("\").Count - 1).Replace(".ordex", "")) = ListedFile
+            Next
+            Try
+                LoadingProgress.Value += 1
+                Application.DoEvents()
+            Catch ex As Exception
+
+            End Try
+        Next
+
+        LoadingProgress.Value = 0
+        InfoLabel.Text = "Saving POD.ordlst to T:\AppData"
+        Application.DoEvents()
+        Loader.SaveDataToFile("POD.ordlst", OrderDictionary, "T:\AppData") 'Past Order Dictionary
+        MyBase.Enabled = True 'LET BUTTONS BE PRESSED
+        InfoLabel.Text = "POD.ordlst saved to T:\AppData"
+    End Sub
 End Class
