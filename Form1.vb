@@ -31,6 +31,7 @@ Public Class PastOrderOrganisingForm
         LoadingProgress.Minimum = 0 'Starting at 0
 
         InfoLabel.Text = FileList.Count.ToString + " found. Loading." 'Let the user know we haven't frozen
+        LoadingPanel.Visible = True
         Application.DoEvents()
 
         Dim DateOfFile As Date
@@ -56,8 +57,10 @@ Public Class PastOrderOrganisingForm
             GatheredGrid.Rows.Add(newRow) 'Add the row
 
             LoadingProgress.Increment(1)
+            Application.DoEvents()
         Next
 
+        LoadingPanel.Visible = False
         LoadingProgress.Value = 0
         Application.DoEvents()
 
@@ -88,6 +91,7 @@ Public Class PastOrderOrganisingForm
         Else
             Dim locString As String = PastSubText.Text
             If Not locString.EndsWith("\") Then 'Make sure we format this right
+                PastSubText.Text += "\"
                 locString += "\"
             End If
             LoadedFolderLocation = "T:\AppData\Orders\Past\" + locString 'Get items from subfolders
@@ -135,7 +139,7 @@ Public Class PastOrderOrganisingForm
 
                         InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
                         MyBase.Enabled = False
-
+                        LoadingPanel.Visible = True
                         Application.DoEvents()
 
                         Dim DateOfFile As Date = Today.AddDays(-daysOld) 'Get 4 days in the past
@@ -152,11 +156,12 @@ Public Class PastOrderOrganisingForm
                                 End If
                             End If
                             LoadingProgress.Increment(1)
+                            Application.DoEvents()
                         Next
                         LoadingProgress.Value = 0
+                        LoadingPanel.Visible = False
                         InfoLabel.Text = "Files moved."
                         GatheredGrid.Rows.Clear()
-
                         Application.DoEvents()
                         If MsgBox("Items moved. Do you want to make the Past Order Dictionary?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                             MakeOrdLst()
@@ -196,6 +201,7 @@ Public Class PastOrderOrganisingForm
         LoadingProgress.Value = 0
 
         Dim OrderDictionary As New Dictionary(Of String, String)
+        LoadingPanel.Visible = True
 
         'ORDERS FOLDER
         InfoLabel.Text = currentOrdexList.Count.ToString + " files in Orders"
@@ -235,5 +241,6 @@ Public Class PastOrderOrganisingForm
         Loader.SaveDataToFile("POD.ordlst", OrderDictionary, "T:\AppData") 'Past Order Dictionary
         MyBase.Enabled = True 'LET BUTTONS BE PRESSED
         InfoLabel.Text = "POD.ordlst saved to T:\AppData"
+        LoadingPanel.Visible = False
     End Sub
 End Class
