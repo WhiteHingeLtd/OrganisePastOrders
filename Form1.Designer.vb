@@ -42,9 +42,11 @@ Partial Class PastOrderOrganisingForm
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.LoadingPanel = New System.Windows.Forms.Panel()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.MoveAllPostedBtn = New System.Windows.Forms.Button()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.GatheredGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.LoadingPanel.SuspendLayout()
         Me.SuspendLayout()
@@ -80,7 +82,7 @@ Partial Class PastOrderOrganisingForm
         Me.GatheredGrid.Location = New System.Drawing.Point(11, 111)
         Me.GatheredGrid.Name = "GatheredGrid"
         Me.GatheredGrid.RowHeadersVisible = False
-        Me.GatheredGrid.Size = New System.Drawing.Size(430, 422)
+        Me.GatheredGrid.Size = New System.Drawing.Size(426, 418)
         Me.GatheredGrid.TabIndex = 3
         '
         'OrderNumCol
@@ -105,24 +107,24 @@ Partial Class PastOrderOrganisingForm
         '
         'DestinationCB
         '
-        Me.DestinationCB.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DestinationCB.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.DestinationCB.FormattingEnabled = True
         Me.DestinationCB.Items.AddRange(New Object() {"Date-based folder", "Orders folder"})
-        Me.DestinationCB.Location = New System.Drawing.Point(301, 539)
+        Me.DestinationCB.Location = New System.Drawing.Point(196, 536)
         Me.DestinationCB.Name = "DestinationCB"
-        Me.DestinationCB.Size = New System.Drawing.Size(140, 21)
+        Me.DestinationCB.Size = New System.Drawing.Size(123, 21)
         Me.DestinationCB.TabIndex = 4
         Me.DestinationCB.Text = "---Please Select---"
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(198, 542)
+        Me.Label1.Location = New System.Drawing.Point(9, 539)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(97, 13)
+        Me.Label1.Size = New System.Drawing.Size(53, 13)
         Me.Label1.TabIndex = 5
-        Me.Label1.Text = "Send these files to:"
+        Me.Label1.Text = "Send files"
         '
         'InfoLabel
         '
@@ -135,20 +137,19 @@ Partial Class PastOrderOrganisingForm
         '
         'LoadingProgress
         '
-        Me.LoadingProgress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LoadingProgress.Location = New System.Drawing.Point(12, 593)
+        Me.LoadingProgress.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.LoadingProgress.Location = New System.Drawing.Point(11, 589)
         Me.LoadingProgress.Name = "LoadingProgress"
-        Me.LoadingProgress.Size = New System.Drawing.Size(373, 23)
+        Me.LoadingProgress.Size = New System.Drawing.Size(309, 22)
         Me.LoadingProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.LoadingProgress.TabIndex = 7
         '
         'SendOldBtn
         '
-        Me.SendOldBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SendOldBtn.Location = New System.Drawing.Point(391, 593)
+        Me.SendOldBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.SendOldBtn.Location = New System.Drawing.Point(12, 562)
         Me.SendOldBtn.Name = "SendOldBtn"
-        Me.SendOldBtn.Size = New System.Drawing.Size(51, 23)
+        Me.SendOldBtn.Size = New System.Drawing.Size(308, 21)
         Me.SendOldBtn.TabIndex = 8
         Me.SendOldBtn.Text = "SEND"
         Me.SendOldBtn.UseVisualStyleBackColor = True
@@ -157,7 +158,7 @@ Partial Class PastOrderOrganisingForm
         '
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(136, 52)
+        Me.Label2.Location = New System.Drawing.Point(132, 52)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(184, 13)
         Me.Label2.TabIndex = 9
@@ -166,7 +167,7 @@ Partial Class PastOrderOrganisingForm
         'PastSubText
         '
         Me.PastSubText.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.PastSubText.Location = New System.Drawing.Point(317, 49)
+        Me.PastSubText.Location = New System.Drawing.Point(313, 49)
         Me.PastSubText.Name = "PastSubText"
         Me.PastSubText.Size = New System.Drawing.Size(119, 20)
         Me.PastSubText.TabIndex = 10
@@ -183,18 +184,18 @@ Partial Class PastOrderOrganisingForm
         '
         'Label3
         '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(340, 569)
+        Me.Label3.Location = New System.Drawing.Point(97, 539)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(84, 13)
+        Me.Label3.Size = New System.Drawing.Size(96, 13)
         Me.Label3.TabIndex = 12
-        Me.Label3.Text = "or more days old"
+        Me.Label3.Text = "or more days old to"
         '
         'DaysOldNum
         '
-        Me.DaysOldNum.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DaysOldNum.Location = New System.Drawing.Point(301, 566)
+        Me.DaysOldNum.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.DaysOldNum.Location = New System.Drawing.Point(62, 536)
         Me.DaysOldNum.Name = "DaysOldNum"
         Me.DaysOldNum.Size = New System.Drawing.Size(33, 20)
         Me.DaysOldNum.TabIndex = 13
@@ -204,7 +205,7 @@ Partial Class PastOrderOrganisingForm
         '
         Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(316, 69)
+        Me.Label4.Location = New System.Drawing.Point(312, 69)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(130, 13)
         Me.Label4.TabIndex = 14
@@ -214,7 +215,7 @@ Partial Class PastOrderOrganisingForm
         '
         Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(136, 30)
+        Me.Label5.Location = New System.Drawing.Point(132, 30)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(264, 13)
         Me.Label5.TabIndex = 15
@@ -224,21 +225,11 @@ Partial Class PastOrderOrganisingForm
         '
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(136, 8)
+        Me.Label6.Location = New System.Drawing.Point(132, 8)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(216, 13)
         Me.Label6.TabIndex = 16
         Me.Label6.Text = "Grabs all orders currently in the orders folder."
-        '
-        'Label7
-        '
-        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(241, 569)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(53, 13)
-        Me.Label7.TabIndex = 17
-        Me.Label7.Text = "if they are"
         '
         'LoadingPanel
         '
@@ -248,7 +239,7 @@ Partial Class PastOrderOrganisingForm
         Me.LoadingPanel.Controls.Add(Me.Label8)
         Me.LoadingPanel.Location = New System.Drawing.Point(118, 279)
         Me.LoadingPanel.Name = "LoadingPanel"
-        Me.LoadingPanel.Size = New System.Drawing.Size(214, 100)
+        Me.LoadingPanel.Size = New System.Drawing.Size(210, 96)
         Me.LoadingPanel.TabIndex = 18
         Me.LoadingPanel.Visible = False
         '
@@ -257,20 +248,52 @@ Partial Class PastOrderOrganisingForm
         Me.Label8.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(46, 26)
+        Me.Label8.Location = New System.Drawing.Point(44, 24)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(126, 50)
         Me.Label8.TabIndex = 0
         Me.Label8.Text = "Loading" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please wait..."
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'MoveAllPostedBtn
+        '
+        Me.MoveAllPostedBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.MoveAllPostedBtn.Enabled = False
+        Me.MoveAllPostedBtn.Location = New System.Drawing.Point(348, 563)
+        Me.MoveAllPostedBtn.Name = "MoveAllPostedBtn"
+        Me.MoveAllPostedBtn.Size = New System.Drawing.Size(71, 43)
+        Me.MoveAllPostedBtn.TabIndex = 19
+        Me.MoveAllPostedBtn.Text = "MOVE POSTED"
+        Me.MoveAllPostedBtn.UseVisualStyleBackColor = True
+        '
+        'Label9
+        '
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(349, 538)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(70, 26)
+        Me.Label9.TabIndex = 20
+        Me.Label9.Text = "Alternatively," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "load states to"
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Location = New System.Drawing.Point(322, 535)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(3, 76)
+        Me.Panel1.TabIndex = 21
+        '
         'PastOrderOrganisingForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(454, 628)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.Label9)
+        Me.Controls.Add(Me.MoveAllPostedBtn)
         Me.Controls.Add(Me.LoadingPanel)
-        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
@@ -287,6 +310,9 @@ Partial Class PastOrderOrganisingForm
         Me.Controls.Add(Me.GatheredGrid)
         Me.Controls.Add(Me.GetFromPastBtn)
         Me.Controls.Add(Me.GetFromOrdersBtn)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(470, 667)
         Me.MinimumSize = New System.Drawing.Size(470, 667)
         Me.Name = "PastOrderOrganisingForm"
         Me.Text = "Past Order Organiser"
@@ -317,7 +343,9 @@ Partial Class PastOrderOrganisingForm
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
-    Friend WithEvents Label7 As Label
     Friend WithEvents LoadingPanel As Panel
     Friend WithEvents Label8 As Label
+    Friend WithEvents MoveAllPostedBtn As Button
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Panel1 As Panel
 End Class

@@ -1,5 +1,4 @@
 ﻿Imports WHLClasses
-Imports Linnworks.Orders.ExtendedOrder
 
 Public Class PastOrderOrganisingForm
     Dim FilesGathered As Boolean = False
@@ -9,13 +8,16 @@ Public Class PastOrderOrganisingForm
     Dim LoadedFromPast As Boolean = False
     Dim LoadedFromOther As Boolean = False 'Will we ever do this? Maybe. If we decide to get particular past folders...
     Dim LoadedFolderLocation As String = "" 'This will contain that folder's location and load from there. Let's ensure maximum accessibility
+    Dim client As Services.OrderServer.iOSClientChannel
+    Dim orddef As New Orders.OrderDefinition
+    Dim streamWorked As Boolean = False
 
     'Dim listOfOrders As Linnworks.Orders.ExtendedOrder 'NOPE. there's 22k files in that past folder. No. Don't hold all that info. Are you NUTS.
     Private Sub GatherItems(FilePath As String)
         GatheredGrid.Rows.Clear() 'We gotta clear this out on running a second time.
 
         Dim LoadOrderStatus As Boolean = False
-        If MsgBox("Would you like to load order states? This will take longer as it has to load EACH file individually to get this information", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+        If MsgBox("Would you like to load order states? This is required to specifically send all posted files.", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             LoadOrderStatus = True
         End If
 
@@ -34,6 +36,25 @@ Public Class PastOrderOrganisingForm
         LoadingPanel.Visible = True
         Application.DoEvents()
 
+
+        Try
+            client = Services.OrderServer.ConnectChannel("net.tcp://orderserver.ad.whitehinge.com:801/OrderServer/1/")
+        Catch ex As Exception
+            client = Nothing
+        End Try
+
+        streamWorked = False
+        If LoadOrderStatus Then
+            Try
+                If Not IsNothing(client) Then
+                    orddef = client.StreamOrderDefinition
+                    streamWorked = True
+                End If
+            Catch ex As Exception
+            End Try
+        End If
+
+
         Dim DateOfFile As Date
         For Each file In FileList
             DateOfFile = My.Computer.FileSystem.GetFileInfo(file).CreationTime '.ToString("yyyy/MM/dd")
@@ -43,14 +64,29 @@ Public Class PastOrderOrganisingForm
             newRow.Cells(0).Value = file.Replace(FilePath, "") 'Add the file name to the first column
             newRow.Cells(1).Value = DateOfFile 'Add the state date to the second column
 
-            If LoadOrderStatus Then
-                Try 'Awww shit this is gonna suck... We can't just use the orddef because it just checks orders. Past isn't gonna work like that.
-                    Dim theOrdex As Linnworks.Orders.ExtendedOrder = Loader.LoadOrdex(file, False)
-                    newRow.Cells(2).Value = theOrdex.Status.ToString 'Add the file state to the second column
+            Dim streaming As Boolean = False
+            If streamWorked Then
+                Try
+                    streaming = True
+                    Dim thisOrder As Orders.Order = orddef.GetByOrderID(newRow.Cells(0).Value.ToString.Replace(".ordex", ""))
+                    newRow.Cells(2).Value = thisOrder.State.ToString.Replace("_", "")
                 Catch ex As Exception
-                    'When we get loading stuff ready, we need to have our reports added to the table somewhere for when things go wrong...
-                    'Maybe add the name to a list of failed records, then add them to a fail list table in a different window...
+                    streaming = False
                 End Try
+            End If
+
+
+            If Not streaming Then
+                If LoadOrderStatus Then
+                    Try 'Awww shit this is gonna suck... We can't just use the orddef because it just checks orders. Past isn't gonna work like that.
+                        Dim theOrdex As Linnworks.Orders.ExtendedOrder = Loader.LoadOrdex(file, False)
+                        newRow.Cells(2).Value = theOrdex.Status.ToString.Replace("_", "") 'Add the file state to the second column
+
+                    Catch ex2 As Exception
+                        'When we get loading stuff ready, we need to have our reports added to the table somewhere for when things go wrong...
+                        'Maybe add the name to a list of failed records, then add them to a fail list table in a different window...
+                    End Try
+                End If
             End If
 
             newRow.Tag = file
@@ -65,6 +101,9 @@ Public Class PastOrderOrganisingForm
         Application.DoEvents()
 
         MyBase.Enabled = True 'LET BUTTONS BE PRESSED
+        If LoadOrderStatus Then
+            MoveAllPostedBtn.Enabled = True
+        End If
 
         FilesGathered = True 'We've gathered our files. Let our "move" button know it can run.
     End Sub
@@ -242,5 +281,46 @@ Public Class PastOrderOrganisingForm
         MyBase.Enabled = True 'LET BUTTONS BE PRESSED
         InfoLabel.Text = "POD.ordlst saved to T:\AppData"
         LoadingPanel.Visible = False
+    End Sub
+
+    Private Sub MoveAllPostedBtn_Click(sender As Object, e As EventArgs) Handles MoveAllPostedBtn.Click
+
+        If MsgBox("This will send orders in this table in the posted state days ago into the target folder. Are you sure you want to do this?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+
+            InfoLabel.Text = "Moving files. This may take some time." 'Let the user know we haven't frozen
+            MoveAllPostedBtn.Enabled = False
+            MyBase.Enabled = False
+            LoadingPanel.Visible = True
+            Application.DoEvents()
+
+            For Each Row As DataGridViewRow In GatheredGrid.Rows
+                If Row.Cells(2).Value.ToString.ToUpper = "POSTED" Then 'Check if files are 4 days old
+
+
+                    Dim theFile As String = Row.Tag
+                    Dim tagDate As DateTime = Row.Cells(1).Value
+                    Dim DestPath As String = DestinationPath + tagDate.ToString("yyyy-MM-dd") + "\" + theFile.Replace("T:\AppData\Orders\", "").Replace("Past\", "") 'This will become T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+                    My.Computer.FileSystem.MoveFile(theFile, DestPath) 'Send T:\AppData\Orders\1234567.ordex to T:\AppData\Orders\Past\yyyy-MM-dd\1234567.ordex
+
+                End If
+                LoadingProgress.Increment(1)
+                Application.DoEvents()
+            Next
+            LoadingProgress.Value = 0
+            LoadingPanel.Visible = False
+            InfoLabel.Text = "Files moved."
+
+            GatheredGrid.Rows.Clear()
+            Application.DoEvents()
+            If MsgBox("Items moved. Do you want to make the Past Order Dictionary?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                MakeOrdLst()
+            Else
+                MyBase.Enabled = True
+            End If
+        Else
+            MyBase.Enabled = True
+        End If
+
+
     End Sub
 End Class
